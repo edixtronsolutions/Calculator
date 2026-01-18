@@ -1,46 +1,71 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #f2f2f2;
-    font-family: Arial, sans-serif;
+:root{
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --accent:#4a76ff;
+  --muted:#9aa6bf;
+  --shadow: 0 6px 18px rgba(36,50,75,0.08);
+  --radius:12px;
 }
 
-.calculator {
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    width: 260px;
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+html,body{height:100%;margin:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+
+.calculator{
+  width:330px;
+  background:var(--panel);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
 }
 
-#display {
-    width: 100%;
-    height: 50px;
-    font-size: 24px;
-    margin-bottom: 10px;
-    text-align: right;
-    padding-right: 10px;
+.display{
+  width:100%;
+  height:60px;
+  font-size:28px;
+  border-radius:10px;
+  border:1px solid #e6eaf2;
+  padding:10px 14px;
+  margin-bottom:12px;
+  text-align:right;
+  background:linear-gradient(180deg,#fff,#fbfdff);
+  color:#0b1a2b;
 }
 
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+.buttons{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:10px;
 }
 
-button {
-    height: 45px;
-    font-size: 18px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
+.btn{
+  height:52px;
+  border-radius:10px;
+  border: none;
+  background:#f6f8fb;
+  font-size:18px;
+  color:#0b1a2b;
+  cursor:pointer;
+  transition:transform .06s ease, box-shadow .06s ease;
+  box-shadow: 0 2px 6px rgba(11,26,43,0.04);
 }
 
-button:hover {
-    background: #ddd;
+.btn:active{transform:translateY(1px)}
+.btn:hover{filter:brightness(.99)}
+
+.btn.op{background:#eef3ff;color:var(--accent)}
+.btn.action{background:#fff4f1;color:#d04b3b}
+.btn.equals{
+  grid-column: span 1;
+  background:var(--accent);
+  color:white;
+  font-weight:600;
+  box-shadow: 0 6px 18px rgba(74,118,255,0.24);
 }
 
-.zero {
-    grid-column: span 2;
+.btn.zero{grid-column: span 2}
+
+@media (max-width:380px){
+  .calculator{width:100%;}
+  .display{font-size:22px;height:50px}
+  .btn{height:46px;font-size:16px}
 }

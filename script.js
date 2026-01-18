@@ -1,75 +1,46 @@
-const display = document.querySelector('.display');
-const buttons = document.querySelector('.buttons');
-
-let expression = '';
-
-function updateDisplay(text) {
-  display.value = text ?? expression || '0';
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f2f2f2;
+    font-family: Arial, sans-serif;
 }
 
-function appendValue(val) {
-  // Convert fancy operator symbols to JS-equivalents when necessary
-  if (val === '×') val = '*';
-  if (val === '÷') val = '/';
-  expression += val;
-  updateDisplay();
+.calculator {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    width: 260px;
 }
 
-function clearAll() {
-  expression = '';
-  updateDisplay();
+#display {
+    width: 100%;
+    height: 50px;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: right;
+    padding-right: 10px;
 }
 
-function deleteLast() {
-  expression = expression.slice(0, -1);
-  updateDisplay();
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
 
-function evaluateExpression() {
-  if (!expression) return;
-  // Allow only safe characters: digits, operators, parentheses, dot, spaces, percent
-  if (!/^[0-9+\-*/().% \s]+$/.test(expression)) {
-    display.value = 'Error';
-    expression = '';
-    return;
-  }
-  try {
-    // Evaluate using Function — ensure expression is only arithmetic by the regex above
-    // Replace any accidental multiple leading zeros e.g. 00 -> 0 (not strictly necessary)
-    const result = Function('"use strict"; return (' + expression + ')')();
-    expression = String(result);
-    updateDisplay();
-  } catch (e) {
-    display.value = 'Error';
-    expression = '';
-  }
+button {
+    height: 45px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
 }
 
-// Button clicks
-buttons.addEventListener('click', (e) => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  const val = btn.getAttribute('data-value');
-  const action = btn.getAttribute('data-action');
+button:hover {
+    background: #ddd;
+}
 
-  if (action === 'clear') clearAll();
-  else if (action === 'delete') deleteLast();
-  else if (action === 'equals') evaluateExpression();
-  else if (val) appendValue(val);
-});
-
-// Keyboard support
-document.addEventListener('keydown', (e) => {
-  const allowedKeys = '0123456789+-*/().%';
-  if (allowedKeys.includes(e.key)) {
-    appendValue(e.key);
-    e.preventDefault();
-    return;
-  }
-  if (e.key === 'Enter') { evaluateExpression(); e.preventDefault(); return; }
-  if (e.key === 'Backspace') { deleteLast(); e.preventDefault(); return; }
-  if (e.key === 'Escape') { clearAll(); e.preventDefault(); return; }
-});
-
-// initialize
-updateDisplay();
+.zero {
+    grid-column: span 2;
+}

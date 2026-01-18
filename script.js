@@ -1,98 +1,49 @@
-// script.js
-const display = document.querySelector(".display");
-const buttons = document.querySelectorAll(".buttons button");
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vavaal Cauculator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1 style="text-align:center;margin-bottom:12px;font-weight:600;">Vavaal Cauculator</h1>
 
-// Append value to display (map visual operators to JS operators)
-function appendValue(value) {
-  if (value == null) return;
-  // Map any visual symbols to JS-friendly ones (if buttons use them)
-  const map = {
-    "×": "*",
-    "÷": "/",
-    "−": "-",
-  };
-  const v = map[value] ?? value;
-  display.value = (display.value || "") + v;
-}
+  <main class="calculator" role="application" aria-label="Simple calculator">
+    <input class="display" type="text" aria-label="Calculator display" readonly />
+    <div class="buttons" role="group" aria-label="Calculator buttons">
+      <!-- Row 1 -->
+      <button data-action="clear" class="btn action">C</button>
+      <button data-action="delete" class="btn action">⌫</button>
+      <button data-value="(" class="btn op">(</button>
+      <button data-value=")" class="btn op">)</button>
 
-// Evaluate the expression shown on the display
-function calculate() {
-  if (!display.value) return;
-  try {
-    // Prevent accidental letters — allow only numbers, operators, parentheses, decimal point and spaces.
-    // Note: escape the forward slash inside the regex character class.
-    const safe = display.value.replace(/[^\d+\-*\/().\s]/g, "");
-    // Evaluate — using Function is slightly safer than eval (but still be careful)
-    // Note: This is intended for a local calculator app only.
-    const result = Function(`"use strict"; return (${safe})`)();
-    display.value = String(result);
-  } catch (err) {
-    console.error("Calculation error:", err);
-    display.value = "Error";
-    // Optionally clear after short delay:
-    // setTimeout(() => (display.value = ""), 1200);
-  }
-}
+      <!-- Row 2 -->
+      <button data-value="7" class="btn">7</button>
+      <button data-value="8" class="btn">8</button>
+      <button data-value="9" class="btn">9</button>
+      <button data-value="/" class="btn op">÷</button>
 
-// Delete last character
-function deleteLast() {
-  display.value = (display.value || "").slice(0, -1);
-}
+      <!-- Row 3 -->
+      <button data-value="4" class="btn">4</button>
+      <button data-value="5" class="btn">5</button>
+      <button data-value="6" class="btn">6</button>
+      <button data-value="*" class="btn op">×</button>
 
-// Clear full display
-function clearDisplay() {
-  display.value = "";
-}
+      <!-- Row 4 -->
+      <button data-value="1" class="btn">1</button>
+      <button data-value="2" class="btn">2</button>
+      <button data-value="3" class="btn">3</button>
+      <button data-value="-" class="btn op">−</button>
 
-// Hook up button clicks
-buttons.forEach((btn) => {
-  const v = btn.dataset.value;
-  const action = btn.dataset.action;
+      <!-- Row 5 -->
+      <button data-value="0" class="btn zero">0</button>
+      <button data-value="." class="btn">.</button>
+      <button data-action="equals" class="btn equals">=</button>
+      <button data-value="+" class="btn op">+</button>
+    </div>
+  </main>
 
-  if (v !== undefined) {
-    btn.addEventListener("click", () => appendValue(v));
-  } else if (action === "clear") {
-    btn.addEventListener("click", clearDisplay);
-  } else if (action === "delete") {
-    btn.addEventListener("click", deleteLast);
-  } else if (action === "equals") {
-    btn.addEventListener("click", calculate);
-  }
-});
-
-// Keyboard input handling
-document.addEventListener("keydown", function (event) {
-  const key = event.key;
-
-  // Digits and decimal point
-  if (!isNaN(key) || key === ".") {
-    appendValue(key);
-    event.preventDefault();
-    return;
-  }
-
-  // Operators
-  if (key === "+" || key === "-" || key === "*" || key === "/") {
-    appendValue(key);
-    event.preventDefault();
-    return;
-  }
-
-  if (key === "Enter") {
-    event.preventDefault();
-    calculate();
-    return;
-  }
-
-  if (key === "Backspace") {
-    event.preventDefault();
-    deleteLast();
-    return;
-  }
-
-  if (key === "Escape") {
-    event.preventDefault();
-    clearDisplay();
-    return;
-  }
-});
+  <script src="script.js"></script>
+</body>
+</html>

@@ -19,8 +19,9 @@ function appendValue(value) {
 function calculate() {
   if (!display.value) return;
   try {
-    // Prevent accidental letters, allow only numbers, operators, parentheses, decimal point and spaces
-    const safe = display.value.replace(/[^\d+\-*/().\s]/g, "");
+    // Prevent accidental letters — allow only numbers, operators, parentheses, decimal point and spaces.
+    // Note: escape the forward slash inside the regex character class.
+    const safe = display.value.replace(/[^\d+\-*\/().\s]/g, "");
     // Evaluate — using Function is slightly safer than eval (but still be careful)
     // Note: This is intended for a local calculator app only.
     const result = Function(`"use strict"; return (${safe})`)();
@@ -59,7 +60,7 @@ buttons.forEach((btn) => {
   }
 });
 
-// Keyboard input handling (keep your existing mapping but ensure functions exist)
+// Keyboard input handling
 document.addEventListener("keydown", function (event) {
   const key = event.key;
 
